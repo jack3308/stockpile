@@ -1,10 +1,15 @@
 stockpile:
   items:
-    - name: toilet_paper
+    - name: Toilet Paper
       initial_quantity: 12
       min_threshold: 4
       unit_of_measurement: "rolls"
-    - name: paper_towels
+      consume_unit: 1
+      stock_unit: 12
+      
+    - name: Paper Towels
       initial_quantity: 4
       min_threshold: 2
-      unit_of_measurement: "rolls" 
+      unit_of_measurement: "rolls"
+      consume_unit: 1
+      stock_unit: 6 
