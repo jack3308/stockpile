@@ -1,0 +1,10 @@
+stockpile:
+  items:
+    - name: toilet_paper
+      initial_quantity: 12
+      min_threshold: 4
+      unit_of_measurement: "rolls"
+    - name: paper_towels
+      initial_quantity: 4
+      min_threshold: 2
+      unit_of_measurement: "rolls" 

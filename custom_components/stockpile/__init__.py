@@ -8,14 +8,18 @@ PLATFORMS = [Platform.SENSOR, Platform.NUMBER]
 
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the StockPile component."""
-    hass.data.setdefault(DOMAIN, {})
+    if DOMAIN not in config:
+        return True
+
+    # Store the config data
+    hass.data[DOMAIN] = config[DOMAIN]
     
     # Load platforms
-    await hass.async_create_task(
-        hass.helpers.discovery.async_load_platform("sensor", DOMAIN, {}, config)
-    )
-    await hass.async_create_task(
-        hass.helpers.discovery.async_load_platform("number", DOMAIN, {}, config)
-    )
+    for platform in PLATFORMS:
+        hass.async_create_task(
+            hass.helpers.discovery.async_load_platform(
+                platform, DOMAIN, config[DOMAIN], config
+            )
+        )
     
     return True 
