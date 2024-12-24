@@ -1,0 +1,21 @@
+stockpile:
+  items:
+    - name: Paper Towels
+      initial_quantity: 4
+      min_threshold: 2
+      unit_of_measurement: "rolls"
+      
+    - name: Dish Soap
+      initial_quantity: 2
+      min_threshold: 1
+      unit_of_measurement: "bottles"
+      
+    - name: Laundry Detergent
+      initial_quantity: 1
+      min_threshold: 1
+      unit_of_measurement: "containers"
+      
+    - name: Toilet Paper
+      initial_quantity: 12
+      min_threshold: 4
+      unit_of_measurement: "rolls"

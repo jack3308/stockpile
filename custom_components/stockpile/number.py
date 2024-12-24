@@ -13,8 +13,14 @@ async def async_setup_platform(
     discovery_info=None,
 ) -> None:
     """Set up the StockPile number platform."""
-    # For demo, we'll create a single item quantity
-    async_add_entities([StockPileQuantity("pasta")])
+    if discovery_info is None:
+        return
+
+    entities = []
+    for item in hass.data[DOMAIN].get("items", []):
+        entities.append(StockPileQuantity(item["name"]))
+
+    async_add_entities(entities)
 
 class StockPileQuantity(NumberEntity):
     """Representation of a StockPile item quantity."""

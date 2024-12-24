@@ -14,7 +14,10 @@ async def async_setup_platform(
 ) -> None:
     """Set up the StockPile sensor platform."""
     # For demo, we'll create a single item
-    async_add_entities([StockPileNameSensor("pasta")])
+    entities = []
+    for item in hass.data[DOMAIN].get("items", []):
+        entities.append(StockPileNameSensor(item["name"]))
+    async_add_entities(entities)
 
 class StockPileNameSensor(SensorEntity):
     """Representation of a StockPile item name sensor."""
