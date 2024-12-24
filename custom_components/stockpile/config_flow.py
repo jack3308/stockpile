@@ -11,6 +11,8 @@ ITEM_SCHEMA = vol.Schema({
     vol.Optional("initial_quantity", default=0): int,
     vol.Optional("min_threshold", default=1): int,
     vol.Optional("unit_of_measurement", default="units"): str,
+    vol.Optional("consume_unit", default=1): int,
+    vol.Optional("stock_unit", default=1): int,
 })
 
 CONFIG_SCHEMA = vol.Schema({
