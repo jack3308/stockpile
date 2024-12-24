@@ -1,5 +1,8 @@
 {
   "name": "StockPile",
   "domain": "stockpile",
-  "render_readme": true
+  "render_readme": true,
+  "homeassistant": "2024.1.0",
+  "hacs": "1.0.0",
+  "version": "2024.12.01"
 } 
