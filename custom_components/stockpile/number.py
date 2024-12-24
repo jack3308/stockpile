@@ -13,9 +13,6 @@ async def async_setup_platform(
     discovery_info=None,
 ) -> None:
     """Set up the StockPile number platform."""
-    if discovery_info is None:
-        return
-
     entities = []
     for item in hass.data[DOMAIN].get("items", []):
         entities.append(StockPileQuantity(item["name"]))
