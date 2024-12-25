@@ -56,4 +56,4 @@ class StockPileNumber(NumberEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
-        self._value = value 
+        self._value = value
