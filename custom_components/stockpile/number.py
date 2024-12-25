@@ -18,7 +18,7 @@ async def async_setup_entry(
     """Set up number platform."""
     async_add_entities([StockPileNumber(entry)])
 
-class StockPileNumber(NumberEntity):
+class StockPileNumber(RestoreNumber, NumberEntity):
     """StockPile number class."""
 
     def __init__(self, entry: ConfigEntry) -> None:
