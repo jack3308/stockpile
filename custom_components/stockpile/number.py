@@ -1,10 +1,11 @@
 """StockPile number platform."""
 from homeassistant.components.number import NumberEntity
+from homeassistant.components.number import RestoreNumber
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.device_registry import DeviceInfo
-# from homeassistant.helpers.restore_state import RestoreNumber
+
 
 
 from .const import DOMAIN, MANUFACTURER
