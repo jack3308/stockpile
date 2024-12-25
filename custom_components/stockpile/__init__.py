@@ -1,5 +1,5 @@
 """The StockPile integration."""
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 
@@ -11,6 +11,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up StockPile from a config entry."""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = entry.data
+
+    # Add reload service
+    async def reload_service_handler(call: ServiceCall) -> None:
+        """Handle reload service calls."""
+        await async_unload_entry(hass, entry)
+        await async_setup_entry(hass, entry)
+
+    hass.services.async_register(DOMAIN, "reload", reload_service_handler)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
