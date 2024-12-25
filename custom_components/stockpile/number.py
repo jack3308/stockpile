@@ -40,6 +40,15 @@ class StockPileNumber(NumberEntity):
         self._attr_native_step = 1
         self._attr_mode = "box"
 
+    async def async_added_to_hass(self) -> None:
+        """Handle entity which will be added."""
+        await super().async_added_to_hass()
+        
+        # Restore previous state
+        last_state = await self.async_get_last_state()
+        if last_state is not None and last_state.state not in (None, "unknown", "unavailable"):
+            self._value = float(last_state.state)
+
     @property
     def native_value(self) -> float:
         """Return the current value."""
