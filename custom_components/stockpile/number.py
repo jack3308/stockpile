@@ -4,7 +4,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.device_registry import DeviceInfo
-from homeassistant.helpers.restore_state import RestoreNumber
+# from homeassistant.helpers.restore_state import RestoreNumber
+
 
 from .const import DOMAIN, MANUFACTURER
 
@@ -16,7 +17,7 @@ async def async_setup_entry(
     """Set up number platform."""
     async_add_entities([StockPileNumber(entry)])
 
-class StockPileNumber(NumberEntity, RestoreNumber):
+class StockPileNumber(NumberEntity):
     """StockPile number class."""
 
     def __init__(self, entry: ConfigEntry) -> None:
@@ -41,7 +42,7 @@ class StockPileNumber(NumberEntity, RestoreNumber):
 
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added to hass."""
-        if state := await self.async_get_last_state():
+        if state := await self.async_get_last_number_data():
             self._attr_native_value = float(state.state)
 
     async def async_set_native_value(self, value: float) -> None:
