@@ -2,6 +2,7 @@
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
+from homeassistant.helpers.reload import async_setup_reload_service
 
 from .const import DOMAIN
 
@@ -13,12 +14,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = entry.data
 
     # Add reload service
-    async def reload_service_handler(call: ServiceCall) -> None:
-        """Handle reload service calls."""
-        await async_unload_entry(hass, entry)
-        await async_setup_entry(hass, entry)
-
-    hass.services.async_register(DOMAIN, "reload", reload_service_handler)
+    await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
