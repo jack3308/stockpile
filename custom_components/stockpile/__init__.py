@@ -1,55 +1,23 @@
 """The StockPile integration."""
 from homeassistant.core import HomeAssistant
-from homeassistant.const import Platform
-from homeassistant.helpers.device_registry import DeviceRegistry
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 
-from .const import DOMAIN, MANUFACTURER
+from .const import DOMAIN
 
 PLATFORMS = [Platform.NUMBER]
 
-async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the StockPile component."""
-    if DOMAIN not in config:
-        return True
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up StockPile from a config entry."""
+    hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = entry.data
 
-    # Get device registry
-    device_registry = DeviceRegistry(hass)
-    
-    hass.data[DOMAIN] = {
-        "items": config[DOMAIN]["items"],
-        "devices": {}
-    }
-    
-    for item in config[DOMAIN]["items"]:
-        device_id = f"{DOMAIN}_{item['name'].lower().replace(' ', '_')}"
-        
-        # Register device in Home Assistant
-        device = device_registry.async_get_or_create(
-            config_entry_id=None,
-            identifiers={(DOMAIN, device_id)},
-            name=item["name"],
-            manufacturer=MANUFACTURER,
-            model="Inventory Item",
-            sw_version="1.0.0"
-        )
-        
-        hass.data[DOMAIN]["devices"][item["name"]] = {
-            "device_info": {
-                "identifiers": {(DOMAIN, device_id)},
-                "name": item["name"],
-                "manufacturer": MANUFACTURER,
-                "model": "Inventory Item",
-                "sw_version": "1.0.0"
-            },
-            "config": item
-        }
-    
-    for platform in PLATFORMS:
-        hass.async_create_task(
-            hass.helpers.discovery.async_load_platform(
-                platform, DOMAIN, config[DOMAIN], config
-            )
-        )
-    
-    return True 
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    return True
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a config entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
+    return unload_ok 

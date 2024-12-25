@@ -1,23 +1,29 @@
 """Config flow for StockPile."""
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResult
-
 from .const import DOMAIN
 
-ITEM_SCHEMA = vol.Schema({
-    vol.Required("name"): str,
-    vol.Optional("initial_quantity", default=0): int,
-    vol.Optional("min_threshold", default=1): int,
-    vol.Optional("unit_of_measurement", default="units"): str,
-    vol.Optional("consume_unit", default=1): int,
-    vol.Optional("stock_unit", default=1): int,
-})
+class StockPileConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for StockPile."""
 
-CONFIG_SCHEMA = vol.Schema({
-    vol.Required("items"): vol.All(
-        vol.List(ITEM_SCHEMA),
-        vol.Length(min=1)
-    )
-}) 
+    VERSION = 1
+
+    async def async_step_user(self, user_input=None):
+        """Handle the initial step."""
+        if user_input is not None:
+            # Create unique ID from the name
+            await self.async_set_unique_id(f"stockpile_{user_input['name'].lower()}")
+            self._abort_if_unique_id_configured()
+            
+            return self.async_create_entry(
+                title=user_input["name"],
+                data=user_input
+            )
+
+        return self.async_show_form(
+            step_id="user",
+            data_schema=vol.Schema({
+                vol.Required("name"): str,
+                vol.Required("initial_quantity", default=0): int,
+            })
+        ) 
