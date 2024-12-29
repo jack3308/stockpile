@@ -5,6 +5,7 @@ import logging
 from typing import Any
 
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
+from homeassistant.components.number import NumberEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_NAME
 from homeassistant.core import HomeAssistant
@@ -68,8 +69,8 @@ async def async_setup_platform(
 
     add_entities(entities)
 
-class PileSensor(SensorEntity):
-    """Sensor for tracking overall pile quantities."""
+class PileSensor(NumberEntity):
+    """Number entity for adjusting pile quantities."""
 
     def __init__(
         self,
@@ -81,12 +82,17 @@ class PileSensor(SensorEntity):
         max_quantity: float | None,
         step_size: float,
     ) -> None:
-        """Initialize the pile sensor."""
+        """Initialize the pile number entity."""
         self._attr_name = PILE_SENSOR_NAME.format(name)
         self._attr_unique_id = f"pile_{name}"
         self._attr_native_value = initial_quantity
         self._attr_native_unit_of_measurement = unit
-        # self._attr_device_class = SensorDeviceClass.QUANTITY
+        
+        # Number entity specific attributes
+        self._attr_native_min_value = min_quantity
+        self._attr_native_max_value = max_quantity if max_quantity is not None else 9999999
+        self._attr_native_step = step_size
+        self._attr_mode = "box"  # Use a text input box for precise number entry
         
         # Device registry info
         self._attr_device_info = DeviceInfo(
@@ -98,11 +104,13 @@ class PileSensor(SensorEntity):
         
         # Additional attributes
         self._attr_extra_state_attributes = {
-            ATTR_MIN_QUANTITY: min_quantity,
-            ATTR_MAX_QUANTITY: max_quantity,
-            ATTR_STEP_SIZE: step_size,
             ATTR_UNIT: unit,
         }
+
+    async def async_set_native_value(self, value: float) -> None:
+        """Update the current value."""
+        self._attr_native_value = value
+        self.async_write_ha_state()
 
 class StockSensor(SensorEntity):
     """Sensor for tracking individual stock items."""
