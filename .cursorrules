@@ -1,0 +1,57 @@
+# Home Assistant Integration Development CursorRules
+
+# General Python Best Practices
+- Use type annotations for all functions and methods.
+- Follow PEP 8 for code style and formatting.
+- Use docstrings to document all public classes and methods.
+- Prefer list comprehensions and generator expressions for creating lists and iterators.
+
+# Home Assistant Specific Guidelines
+- Ensure all integrations are structured according to the Home Assistant architecture.
+- Use the `hass` object for accessing core Home Assistant functionalities.
+- Define entities using the `Entity` class or its derivatives.
+- Implement config entries for user configuration.
+- Use the `async` keyword for I/O-bound operations to ensure non-blocking behavior.
+- Follow the Integration Quality Scale to ensure high-quality integrations.
+
+# Code Structure
+- Organize code into modules: `__init__.py`, `sensor.py`, `binary_sensor.py`, etc.
+- Use constants for configuration keys and default values.
+- Separate logic into helper functions or classes to improve readability and maintainability.
+
+# Error Handling
+- Use Python's built-in exceptions for error handling.
+- Log errors and warnings using Home Assistant's logging framework.
+
+# Testing
+- Write unit tests for all new features and bug fixes.
+- Use Home Assistant's test utilities for setting up test environments.
+
+# Documentation
+- Provide clear and concise documentation for the integration.
+- Include examples of configuration and usage in the README.md file.
+
+# Contribution Guidelines
+- Ensure all contributions are original or properly credited.
+- Follow the repository's contribution guidelines for pull requests.
+
+# Feature Scope and Requirements
+- Implement only the features that are explicitly requested or required.
+- Avoid adding unnecessary features that could complicate the integration.
+- Prioritize maintaining simplicity and clarity in the codebase.
+
+# Beginner-Friendly Guidelines
+- Provide clear explanations and comments for all code outputs.
+- Document the purpose and usage of each function and class.
+- Use simple and straightforward methods whenever possible.
+- Avoid complex patterns unless absolutely necessary, and explain them thoroughly if used.
+
+# Entity-Specific Guidelines
+- Use the most appropriate class, service, method, or action for the entity type in question.
+- Ensure that the entity's functionality aligns with Home Assistant's core capabilities and standards.
+- Regularly review Home Assistant's documentation for updates on best practices and new features.
+
+# Additional Resources
+- Refer to the Home Assistant developer documentation for detailed guidelines: https://developers.home-assistant.io/docs/development_index/ \
+- Refer to 'dev_plan.md' for the overarching project plan
+- Refer to 'instruction_set.md' for project specific instructions.

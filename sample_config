@@ -1,0 +1,8 @@
+stockpile:
+  piles:
+    - name: wine
+      unit: bottles
+      initial_quantity: 12
+      min_quantity: 2
+      max_quantity: 24
+      step_size: 1

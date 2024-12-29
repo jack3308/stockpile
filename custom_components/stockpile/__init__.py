@@ -1,27 +1,60 @@
 """The StockPile integration."""
-from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.config_entries import ConfigEntry
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+import voluptuous as vol
+
 from homeassistant.const import Platform
-from homeassistant.helpers.reload import async_setup_reload_service
+from homeassistant.core import HomeAssistant
+import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.typing import ConfigType
 
-from .const import DOMAIN
+_LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.NUMBER]
+# Define the schema for each stockpile entry
+STOCKPILE_SCHEMA = vol.Schema({
+    vol.Required("name"): cv.string,
+    vol.Required("unit"): cv.string,
+    vol.Required("initial_quantity"): cv.positive_float,
+    vol.Optional("min_quantity", default=0): cv.positive_float,
+    vol.Optional("max_quantity"): cv.positive_float,
+    vol.Optional("step_size", default=1): cv.positive_float,
+})
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up StockPile from a config entry."""
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = entry.data
+# Define the main configuration schema
+CONFIG_SCHEMA = vol.Schema({
+    vol.Required("stockpile"): vol.Schema({
+        vol.Required("piles"): vol.All(
+            cv.ensure_list,
+            [STOCKPILE_SCHEMA]
+        )
+    })
+}, extra=vol.ALLOW_EXTRA)
 
-    # Add reload service
-    await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
+PLATFORMS = [Platform.SENSOR, Platform.CALENDAR]
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    return True
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the StockPile integration."""
+    if "stockpile" not in config:
+        return True
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id)
-    return unload_ok 
+    # Store the configuration in hass.data
+    hass.data["stockpile"] = {}
+    conf = config["stockpile"]
+
+    # Set up each stockpile
+    for pile in conf["piles"]:
+        pile_name = pile["name"]
+        hass.data["stockpile"][pile_name] = pile
+
+    # Forward the setup to the sensor and calendar platforms
+    for platform in PLATFORMS:
+        hass.async_create_task(
+            hass.helpers.discovery.async_load_platform(
+                platform, "stockpile", conf, config
+            )
+        )
+
+    return True 
