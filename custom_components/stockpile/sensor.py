@@ -119,7 +119,7 @@ class StockSensor(SensorEntity):
         self._attr_unique_id = f"stock_{name}"
         self._attr_native_value = initial_quantity
         self._attr_native_unit_of_measurement = unit
-        self._attr_device_class = SensorDeviceClass.QUANTITY
+        # self._attr_device_class = SensorDeviceClass.QUANTITY
         
         # Device registry info
         self._attr_device_info = DeviceInfo(
