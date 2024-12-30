@@ -1,0 +1,11 @@
+{
+  "codeowners": ["@jack3308"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/jack3308/stockpile",
+  "domain": "stock_pile",
+  "iot_class": "calculated",
+  "name": "Stock Pile",
+  "requirements": [],
+  "version": "beta-0.0.1"
+}

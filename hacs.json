@@ -1,6 +1,5 @@
 {
-  "name": "StockPile",
+  "name": "Stock Pile",
   "render_readme": true,
-  "homeassistant": "2023.8.0",
-  "hacs": "1.6.0"
-} 
+  "iot_class": "calculated"
+}

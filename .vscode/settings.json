@@ -1,0 +1,15 @@
+{
+    "sshfs.configs": [
+        {
+            "name": "homelab",
+            "label": "HomeLab",
+            "host": "10.0.0.4",
+            "port": 22,
+            "root": "/",
+            "username": "jexie33",
+            "password": "Steve09/04/06",
+            "privateKeyPath": "c:\\Users\\Jax\\.ssh\\id_rsa.pub",
+            "passphrase": "Steve09/04/06"
+        }
+    ]
+}

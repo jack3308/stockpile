@@ -1,0 +1,1 @@
+DOMAIN = "stock_pile"
